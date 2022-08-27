@@ -1,0 +1,360 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Notification Engine",
+    "description": "Notification API list"
+  },
+  "tags": [
+    {
+      "name": "Client",
+      "description": "API for Client management"
+    },
+    {
+      "name": "Users",
+      "description": "API for users Entity management"
+    },
+    {
+      "name": "Notification",
+      "description": "API to send notifications"
+    }
+  ],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/api/client/register": {
+      "post": {
+        "tags": ["Client"],
+        "description": "Add client in the database",
+        "parameters": [
+          {
+            "name": "UserName",
+            "in": "body",
+            "description": "client name to be added",
+            "schema": {
+              "$ref": "#/definitions/clientName"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {}
+      }
+    },
+    "/api/client/{secretKey}": {
+      "parameters": [
+        {
+          "name": "secretKey",
+          "in": "path",
+          "required": true,
+          "description": "Secret key of client that we want to find",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": ["Client"],
+        "summary": "create JWT token",
+        "responses": {}
+      }
+    },
+    "/api/user/create": {
+      "post": {
+        "tags": ["Users"],
+        "description": "Add Entity in the database",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string",
+            "description": "auth token"
+          },
+          {
+            "name": "Entity",
+            "in": "body",
+            "description": "Entity name to be added",
+            "schema": {
+              "$ref": "#/definitions/createEntity"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {}
+      }
+    },
+    "/api/user/{Id}": {
+      "get": {
+        "tags": ["Users"],
+        "description": "Search Entity in the database",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string",
+            "description": "auth token"
+          },
+          {
+            "name": "Id",
+            "in": "path",
+            "description": "Entity to be searched",
+            "schema": {
+              "$ref": "#/definitions/searchEntity"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {}
+      }
+    },
+    "/api/user/update": {
+      "post": {
+        "tags": ["Users"],
+        "description": "Update Entity in the database",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string",
+            "description": "auth token"
+          },
+          {
+            "name": "Entity",
+            "in": "body",
+            "description": "Delete Entity",
+            "schema": {
+              "$ref": "#/definitions/updateEntity"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {}
+      }
+    },
+    "/api/user/delete/{Id}": {
+      "get": {
+        "tags": ["Users"],
+        "description": "Delete Entity in the database",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string",
+            "description": "auth token"
+          },
+          {
+            "name": "Id",
+            "in": "path",
+            "description": "Delete Entity",
+            "schema": {
+              "$ref": "#/definitions/searchEntity"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {}
+      }
+    },
+    "/api/notification": {
+      "post": {
+        "tags": ["Notification"],
+
+        "description": "Send Notifications to the entity",
+
+        "parameters": [
+          {
+            "name": "Authorization",
+
+            "in": "header",
+
+            "type": "string",
+
+            "description": "auth token"
+          },
+
+          {
+            "name": "Notification",
+
+            "in": "body",
+
+            "description": "Notification type ",
+
+            "schema": {
+              "$ref": "#/definitions/sendNotification"
+            }
+          }
+        ],
+
+        "produces": ["application/json"],
+
+        "responses": {}
+      }
+    }
+  },
+  "definitions": {
+    "secretKey": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "secretKey": {
+          "type": "string"
+        }
+      }
+    },
+    "createEntity": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "email": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "phoneNumber": {
+          "type": "number",
+          "uniqueItems": true
+        },
+        "deviceId": {
+          "type": "number",
+          "uniqueItems": true
+        }
+      }
+    },
+
+    "clientName": {
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "uniqueItems": true
+        }
+      }
+    },
+
+    "searchEntity": {
+      "properties": {
+        "Id": {
+          "type": "string",
+          "uniqueItems": true
+        }
+      }
+    },
+
+    "updateEntity": {
+      "properties": {
+        "Id": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "name": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "email": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "phoneNumber": {
+          "type": "number",
+          "uniqueItems": true
+        },
+        "deviceId": {
+          "type": "number",
+          "uniqueItems": true
+        }
+      }
+    },
+
+    "sendNotification": {
+      "properties": {
+        "type": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+
+        "info": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "body": {
+          "type": "string"
+        }
+      }
+    },
+
+    "User": {
+      "required": ["name", "_id", "companies"],
+      "properties": {
+        "_id": {
+          "type": "integer",
+          "uniqueItems": true
+        },
+        "isPublic": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "books": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "amount": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "companies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "updateUser": {
+      "required": ["name", "companies"],
+      "properties": {
+        "isPublic": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "books": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "amount": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "companies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Users": {
+      "type": "array",
+      "$ref": "#/definitions/User"
+    }
+  }
+}
